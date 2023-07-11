@@ -2,35 +2,43 @@ const dotenv = require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+
 const userRoute = require("./routes/userRoute");
-const errorHandler = require("./middleware/errorMiddlleware");
+const errorHandler = require("./middleware/errorMiddleware");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// middlewares
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors());
-app.use(errorHandler);
 
-// routes widdlewares
+// Fix Cors
+app.use(cors());
+
+// Routes Middleware
 app.use("/api/users", userRoute);
 
-app.use("/", (req, res) => {
-  res.send("welcome to home page api");
+// Routes
+app.get("/", (req, res) => {
+  res.send("Welcome to the home page");
 });
 
+// errorHandler Should be the last middleware
+app.use(errorHandler);
+
+const PORT = process.env.PORT || 5000;
+
+// Connect DB & start server
 mongoose
   .connect(process.env.MONGO_URL)
-  .then(() => {
-    console.log("Connected database");
+  .then(() =>
     app.listen(PORT, () => {
-      console.log(`Server is running at ${PORT}`);
-    });
-  })
-  .catch((error) => console.log(error));
+      console.log("connected to db");
+      console.log(`Server running on port ${PORT}...`);
+    })
+  )
+  .catch((err) => console.log(err));

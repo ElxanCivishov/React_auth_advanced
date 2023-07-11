@@ -1,23 +1,26 @@
 const express = require("express");
+const router = express.Router();
 const {
-  regsiterUser,
+  registerUser,
   loginUser,
-  logoutUser,
+  updateUser,
+  changePassword,
+  logout,
+  forgotPassword,
+  resetPassword,
+  loginStatus,
   getUser,
 } = require("../controllers/userController");
 const protect = require("../middleware/authMiddleware");
 
-const router = express.Router();
-router.get("/", (req, res) => {
-  res.send({
-    message: "users",
-    success: true,
-  });
-});
-
-router.post("/register", regsiterUser);
+router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.get("/logout", logoutUser);
+router.get("/loggedIn", loginStatus);
+router.get("/logout", logout);
 router.get("/getuser", protect, getUser);
+router.patch("/updateuser", protect, updateUser);
+router.patch("/changepassword", protect, changePassword);
+router.post("/forgotpassword", forgotPassword);
+router.put("/resetpassword/:resetToken", resetPassword);
 
 module.exports = router;
