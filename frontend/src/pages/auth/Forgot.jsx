@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import { AiOutlineMail } from "react-icons/ai";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-// import Loader from "../../components/loader/Loader";
-// import { validateEmail } from "../../redux/features/auth/authService";
-// import { forgotPassword, RESET } from "../../redux/features/auth/authSlice";
 import styles from "./auth.module.scss";
-import { Card } from "../../components";
+import { Card, Loader } from "../../components";
+import { validateEmail } from "../../redux/features/auth/authService";
+import { RESET, forgotPassword } from "../../redux/features/auth/authSlice";
 
 const Forgot = () => {
   const [email, setEmail] = useState("");
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  //   const { isLoading } = useSelector((state) => state.auth);
+  const { isLoading } = useSelector((state) => state.auth);
 
   const forgot = async (e) => {
     e.preventDefault();
@@ -22,21 +21,21 @@ const Forgot = () => {
       return toast.error("Please enter an email");
     }
 
-    // if (!validateEmail(email)) {
-    //   return toast.error("Please enter a valid email");
-    // }
+    if (!validateEmail(email)) {
+      return toast.error("Please enter a valid email");
+    }
 
     const userData = {
       email,
     };
 
-    // await dispatch(forgotPassword(userData));
-    // await dispatch(RESET(userData));
+    await dispatch(forgotPassword(userData));
+    await dispatch(RESET(userData));
   };
 
   return (
     <div className={`container ${styles.auth}`}>
-      {/* {isLoading && <Loader />} */}
+      {isLoading && <Loader />}
       <Card>
         <div className={styles.form}>
           <div className="--flex-center">

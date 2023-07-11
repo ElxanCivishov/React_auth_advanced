@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { BiLogIn } from "react-icons/bi";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-// import { toast } from "react-toastify";
-// import Card from "../../components/card/Card";
-// import Loader from "../../components/loader/Loader";
-// import PasswordInput from "../../components/passwordInput/PasswordInput";
-// import { validateEmail } from "../../redux/features/auth/authService";
-// import {
-//   login,
-//   loginWithGoogle,
-//   RESET,
-//   sendLoginCode,
-// } from "../../redux/features/auth/authSlice";
-import styles from "./auth.module.scss";
-// import { GoogleLogin } from "@react-oauth/google";
-import { Card, PasswordInput } from "../../components";
 import { toast } from "react-toastify";
+
+import styles from "./auth.module.scss";
+import { GoogleLogin } from "@react-oauth/google";
+import { Card, Loader, PasswordInput } from "../../components";
+import { validateEmail } from "../../redux/features/auth/authService";
+import {
+  RESET,
+  login,
+  loginWithGoogle,
+  sendLoginCode,
+} from "../../redux/features/auth/authSlice";
+// import { toast } from "react-toastify";
 
 const initialState = {
   email: "",
@@ -31,11 +29,11 @@ const Login = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //   const { isLoading, isLoggedIn, isSuccess, message, isError, twoFactor } =
-  //     useSelector((state) => state.auth);
+  const { isLoading, isLoggedIn, isSuccess, message, isError, twoFactor } =
+    useSelector((state) => state.auth);
 
   const loginUser = async (e) => {
     e.preventDefault();
@@ -44,9 +42,9 @@ const Login = () => {
       return toast.error("All fields are required");
     }
 
-    // if (!validateEmail(email)) {
-    //   return toast.error("Please enter a valid email");
-    // }
+    if (!validateEmail(email)) {
+      return toast.error("Please enter a valid email");
+    }
 
     const userData = {
       email,
@@ -54,32 +52,32 @@ const Login = () => {
     };
 
     console.log(userData);
-    // await dispatch(login(userData));
+    await dispatch(login(userData));
   };
 
-  //   useEffect(() => {
-  //     if (isSuccess && isLoggedIn) {
-  //       navigate("/profile");
-  //     }
+  useEffect(() => {
+    if (isSuccess && isLoggedIn) {
+      navigate("/profile");
+    }
 
-  //     if (isError && twoFactor) {
-  //       dispatch(sendLoginCode(email));
-  //       navigate(`/loginWithCode/${email}`);
-  //     }
+    if (isError && twoFactor) {
+      dispatch(sendLoginCode(email));
+      navigate(`/loginWithCode/${email}`);
+    }
 
-  //     dispatch(RESET());
-  //   }, [isLoggedIn, isSuccess, dispatch, navigate, isError, twoFactor, email]);
+    dispatch(RESET());
+  }, [isLoggedIn, isSuccess, dispatch, navigate, isError, twoFactor, email]);
 
-  //   const googleLogin = async (credentialResponse) => {
-  //     console.log(credentialResponse);
-  //     await dispatch(
-  //       loginWithGoogle({ userToken: credentialResponse.credential })
-  //     );
-  //   };
+  const googleLogin = async (credentialResponse) => {
+    console.log(credentialResponse);
+    await dispatch(
+      loginWithGoogle({ userToken: credentialResponse.credential })
+    );
+  };
 
   return (
     <div className={`container ${styles.auth}`}>
-      {/* {isLoading && <Loader />} */}
+      {isLoading && <Loader />}
       <Card>
         <div className={styles.form}>
           <div className="--flex-center">
@@ -88,13 +86,13 @@ const Login = () => {
           <h2>Login</h2>
           <div className="--flex-center">
             <button className="--btn --btn-google">Login With Google</button>
-            {/* <GoogleLogin
+            <GoogleLogin
               onSuccess={googleLogin}
               onError={() => {
                 console.log("Login Failed");
                 toast.error("Login Failed");
               }}
-            /> */}
+            />
           </div>
           <br />
           <p className="--text-center --fw-bold">or</p>

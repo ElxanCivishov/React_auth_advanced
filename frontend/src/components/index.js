@@ -8,3 +8,4 @@ export { default as InfoBox } from "./infoBox/InfoBox";
 export { default as UsersStats } from "./usersStats/UsersStats";
 export { default as Search } from "./search/Search";
 export { default as ChangeRole } from "./changeRole/ChangeRole";
+export { default as Loader } from "./loader/Loader";

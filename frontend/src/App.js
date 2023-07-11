@@ -1,4 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 import {
   ChangePassword,
   Forgot,
@@ -13,14 +20,32 @@ import {
 } from "./containers";
 import { Layout } from "./components";
 
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import {
+  getLoginStatus,
+  getUser,
+  selectIsLoggedIn,
+  selectUser,
+} from "./redux/features/auth/authSlice";
+import { useEffect } from "react";
+
+axios.defaults.withCredentials = true;
 
 function App() {
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const user = useSelector(selectUser);
+
+  useEffect(() => {
+    dispatch(getLoginStatus());
+    if (isLoggedIn && user === null) {
+      dispatch(getUser());
+    }
+  }, [dispatch, user, isLoggedIn]);
   return (
     <>
       <ToastContainer />
       <BrowserRouter>
+        {/* <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}> */}
         <Routes>
           <Route
             path="/"
@@ -61,6 +86,7 @@ function App() {
             }
           />
         </Routes>
+        {/* </GoogleOAuthProvider> */}
       </BrowserRouter>
     </>
   );
