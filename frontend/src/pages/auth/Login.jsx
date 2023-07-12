@@ -14,7 +14,6 @@ import {
   loginWithGoogle,
   sendLoginCode,
 } from "../../redux/features/auth/authSlice";
-// import { toast } from "react-toastify";
 
 const initialState = {
   email: "",
@@ -85,7 +84,6 @@ const Login = () => {
           </div>
           <h2>Login</h2>
           <div className="--flex-center">
-            <button className="--btn --btn-google">Login With Google</button>
             <GoogleLogin
               onSuccess={googleLogin}
               onError={() => {

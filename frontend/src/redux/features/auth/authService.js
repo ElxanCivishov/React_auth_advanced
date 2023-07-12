@@ -44,7 +44,6 @@ const forgotPassword = async (userData) => {
 const resetPassword = async (userData, resetToken) => {
   const response = await axios.patch(
     `${API_URL}resetPassword/${resetToken}`,
-
     userData
   );
   return response.data.message;
@@ -90,7 +89,6 @@ const getUsers = async () => {
 
 // Delete User
 const deleteUser = async (id) => {
-  //   console.log("delete:" + id);
   const response = await axios.delete(API_URL + id);
   return response.data.message;
 };

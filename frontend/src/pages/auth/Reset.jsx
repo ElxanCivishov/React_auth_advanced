@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { MdPassword } from "react-icons/md";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-// import Loader from "../../components/loader/Loader";
-// import { RESET, resetPassword } from "../../redux/features/auth/authSlice";
 import styles from "./auth.module.scss";
-import { Card, PasswordInput } from "../../components";
+import { Card, Loader, PasswordInput } from "../../components";
+import { RESET, resetPassword } from "../../redux/features/auth/authSlice";
 
 const initialState = {
   password: "",
@@ -20,10 +19,11 @@ const Reset = () => {
   const { resetToken } = useParams();
   console.log(resetToken);
 
-  //   const { isLoading, isLoggedIn, isSuccess, message } = useSelector(
-  //     (state) => state.auth
-  //   );
-  //   const dispatch = useDispatch();
+  const { isLoading, isLoggedIn, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -45,20 +45,20 @@ const Reset = () => {
       password,
     };
 
-    // await dispatch(resetPassword({ userData, resetToken }));
+    await dispatch(resetPassword({ userData, resetToken }));
   };
 
-  //   useEffect(() => {
-  //     if (isSuccess && message.includes("Reset Successful")) {
-  //       navigate("/login");
-  //     }
+  useEffect(() => {
+    if (isSuccess && message.includes("Reset Successful")) {
+      navigate("/login");
+    }
 
-  //     dispatch(RESET());
-  //   }, [dispatch, navigate, message, isSuccess]);
+    dispatch(RESET());
+  }, [dispatch, navigate, message, isSuccess]);
 
   return (
     <div className={`container ${styles.auth}`}>
-      {/* {isLoading && <Loader />} */}
+      {isLoading && <Loader />}
       <Card>
         <div className={styles.form}>
           <div className="--flex-center">

@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 const userRoute = require("./routes/userRoute");
 const errorHandler = require("./middleware/errorMiddleware");
@@ -17,7 +18,16 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // Fix Cors
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    credentials: true,
+  })
+);
+
+// app.use(cors());
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes Middleware
 app.use("/api/users", userRoute);

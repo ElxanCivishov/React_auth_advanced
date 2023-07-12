@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { GrInsecure } from "react-icons/gr";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Card } from "../../components";
-// import {
-//   loginWithCode,
-//   RESET,
-//   sendLoginCode,
-// } from "../../redux/features/auth/authSlice";
+import { Card, Loader } from "../../components";
+import {
+  loginWithCode,
+  RESET,
+  sendLoginCode,
+} from "../../redux/features/auth/authSlice";
 import styles from "./auth.module.scss";
 
 const LoginWithCode = () => {
   const [loginCode, setLoginCode] = useState("");
   const { email } = useParams();
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //   const { isLoading, isLoggedIn, isSuccess } = useSelector(
-  //     (state) => state.auth
-  //   );
+  const { isLoading, isLoggedIn, isSuccess } = useSelector(
+    (state) => state.auth
+  );
 
   const sendUserLoginCode = async () => {
-    // await dispatch(sendLoginCode(email));
-    // await dispatch(RESET());
+    await dispatch(sendLoginCode(email));
+    await dispatch(RESET());
   };
 
   const loginUserWithCode = async (e) => {
@@ -41,20 +41,20 @@ const LoginWithCode = () => {
       loginCode,
     };
 
-    // await dispatch(loginWithCode({ code, email }));
+    await dispatch(loginWithCode({ code, email }));
   };
 
-  //   useEffect(() => {
-  //     if (isSuccess && isLoggedIn) {
-  //       navigate("/profile");
-  //     }
+  useEffect(() => {
+    if (isSuccess && isLoggedIn) {
+      navigate("/profile");
+    }
 
-  //     dispatch(RESET());
-  //   }, [isLoggedIn, isSuccess, dispatch, navigate]);
+    dispatch(RESET());
+  }, [isLoggedIn, isSuccess, dispatch, navigate]);
 
   return (
     <div className={`container ${styles.auth}`}>
-      {/* {isLoading && <Loader />} */}
+      {isLoading && <Loader />}
       <Card>
         <div className={styles.form}>
           <div className="--flex-center">

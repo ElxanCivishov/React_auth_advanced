@@ -1,6 +1,17 @@
 const nodemailer = require("nodemailer");
+const hbs = require("nodemailer-express-handlebars");
+const path = require("path");
 
-const sendEmail = async (subject, message, send_to, sent_from, reply_to) => {
+const sendEmail = async (
+  subject,
+  send_to,
+  sent_from,
+  reply_to,
+  template,
+  name,
+  link
+) => {
+  // Create Email Transporter
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
@@ -13,15 +24,32 @@ const sendEmail = async (subject, message, send_to, sent_from, reply_to) => {
     },
   });
 
+  const handlearOptions = {
+    viewEngine: {
+      extName: ".handlebars",
+      partialsDir: path.resolve("./views"),
+      defaultLayout: false,
+    },
+    viewPath: path.resolve("./views"),
+    extName: ".handlebars",
+  };
+
+  transporter.use("compile", hbs(handlearOptions));
+
+  // Options f0r sending email
   const options = {
     from: sent_from,
     to: send_to,
     replyTo: reply_to,
-    subject: subject,
-    html: message,
+    subject,
+    template,
+    context: {
+      name,
+      link,
+    },
   };
 
-  // Send email
+  // Send Email
   transporter.sendMail(options, function (err, info) {
     if (err) {
       console.log(err);

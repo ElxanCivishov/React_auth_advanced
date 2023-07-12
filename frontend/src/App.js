@@ -1,11 +1,21 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import axios from "axios";
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
+import {
+  getLoginStatus,
+  getUser,
+  selectIsLoggedIn,
+  selectUser,
+} from "./redux/features/auth/authSlice";
+
+import { Layout } from "./components";
 import {
   ChangePassword,
   Forgot,
@@ -18,15 +28,6 @@ import {
   UserList,
   Verify,
 } from "./containers";
-import { Layout } from "./components";
-
-import {
-  getLoginStatus,
-  getUser,
-  selectIsLoggedIn,
-  selectUser,
-} from "./redux/features/auth/authSlice";
-import { useEffect } from "react";
 
 axios.defaults.withCredentials = true;
 
@@ -37,56 +38,65 @@ function App() {
 
   useEffect(() => {
     dispatch(getLoginStatus());
-    if (isLoggedIn && user === null) {
-      dispatch(getUser());
-    }
-  }, [dispatch, user, isLoggedIn]);
+    // if (isLoggedIn && user !== null) {
+    //   dispatch(getUser());
+    // }
+  }, [dispatch, isLoggedIn, user]);
+
   return (
     <>
-      <ToastContainer />
       <BrowserRouter>
-        {/* <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}> */}
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Layout>
-                <Home />
-              </Layout>
-            }
-          />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot" element={<Forgot />} />
-          <Route
-            path="/changePassword"
-            element={
-              <Layout>
-                <ChangePassword />
-              </Layout>
-            }
-          />
-          <Route path="/resetPassword/:resetToken" element={<Reset />} />
-          <Route path="/loginWithCode/:email" element={<LoginWithCode />} />
-          <Route
-            path="/verify/:verificationToken"
-            element={
-              <Layout>
-                <Verify />
-              </Layout>
-            }
-          />
-          <Route path="/profile" element={<Profile />} />
-          <Route
-            path="/users"
-            element={
-              <Layout>
-                <UserList />
-              </Layout>
-            }
-          />
-        </Routes>
-        {/* </GoogleOAuthProvider> */}
+        <ToastContainer />
+        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Layout>
+                  <Home />
+                </Layout>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot" element={<Forgot />} />
+            <Route path="/resetPassword/:resetToken" element={<Reset />} />
+            <Route path="/loginWithCode/:email" element={<LoginWithCode />} />
+
+            <Route
+              path="/verify/:verificationToken"
+              element={
+                <Layout>
+                  <Verify />
+                </Layout>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <Layout>
+                  <Profile />
+                </Layout>
+              }
+            />
+            <Route
+              path="/changePassword"
+              element={
+                <Layout>
+                  <ChangePassword />
+                </Layout>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <Layout>
+                  <UserList />
+                </Layout>
+              }
+            />
+          </Routes>
+        </GoogleOAuthProvider>
       </BrowserRouter>
     </>
   );

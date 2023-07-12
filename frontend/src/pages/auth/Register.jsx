@@ -5,15 +5,14 @@ import { TiUserAddOutline } from "react-icons/ti";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./auth.module.scss";
 import { toast } from "react-toastify";
-import { Card, PasswordInput } from "../../components";
-// import { validateEmail } from "../../redux/features/auth/authService";
-// import { useDispatch, useSelector } from "react-redux";
-// import {
-//   register,
-//   RESET,
-//   sendVerificationEmail,
-// } from "../../redux/features/auth/authSlice";
-// import Loader from "../../components/loader/Loader";
+import { Card, Loader, PasswordInput } from "../../components";
+import { useDispatch, useSelector } from "react-redux";
+import { validateEmail } from "../../redux/features/auth/authService";
+import {
+  RESET,
+  register,
+  sendVerificationEmail,
+} from "../../redux/features/auth/authSlice";
 
 const initialState = {
   name: "",
@@ -26,12 +25,12 @@ const Register = () => {
   const [formData, setFormData] = useState(initialState);
   const { name, email, password, password2 } = formData;
 
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //   const { isLoading, isLoggedIn, isSuccess, message } = useSelector(
-  //     (state) => state.auth
-  //   );
+  const { isLoading, isLoggedIn, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
 
   const [uCase, setUCase] = useState(false);
   const [num, setNum] = useState(false);
@@ -89,9 +88,9 @@ const Register = () => {
     if (password.length < 6) {
       return toast.error("Password must be up to 6 characters");
     }
-    // if (!validateEmail(email)) {
-    //   return toast.error("Please enter a valid email");
-    // }
+    if (!validateEmail(email)) {
+      return toast.error("Please enter a valid email");
+    }
     if (password !== password2) {
       return toast.error("Passwords do not match");
     }
@@ -103,21 +102,21 @@ const Register = () => {
     };
 
     // console.log(userData);
-    // await dispatch(register(userData));
-    // await dispatch(sendVerificationEmail());
+    await dispatch(register(userData));
+    await dispatch(sendVerificationEmail());
   };
 
-  //   useEffect(() => {
-  //     if (isSuccess && isLoggedIn) {
-  //       navigate("/profile");
-  //     }
+  useEffect(() => {
+    if (isSuccess && isLoggedIn) {
+      navigate("/profile");
+    }
 
-  //     dispatch(RESET());
-  //   }, [isLoggedIn, isSuccess, dispatch, navigate]);
+    dispatch(RESET());
+  }, [isLoggedIn, isSuccess, dispatch, navigate]);
 
   return (
     <div className={`container ${styles.auth}`}>
-      {/* {isLoading && <Loader />} */}
+      {isLoading && <Loader />}
       <Card>
         <div className={styles.form}>
           <div className="--flex-center">

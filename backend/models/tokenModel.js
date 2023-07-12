@@ -1,14 +1,22 @@
 const mongoose = require("mongoose");
 
-const tokenSchema = new mongoose.Schema({
+const tokenSchema = mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "user",
   },
-  token: {
+  vToken: {
     type: String,
-    required: true,
+    default: "",
+  },
+  rToken: {
+    type: String,
+    default: "",
+  },
+  lToken: {
+    type: String,
+    default: "",
   },
   createdAt: {
     type: Date,
@@ -21,5 +29,4 @@ const tokenSchema = new mongoose.Schema({
 });
 
 const Token = mongoose.model("Token", tokenSchema);
-
 module.exports = Token;

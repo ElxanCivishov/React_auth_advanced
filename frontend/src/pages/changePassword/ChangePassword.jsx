@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import "./changePassword.scss";
 import { useNavigate } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { Card, PageMenu, PasswordInput } from "../../components";
-// import useRedirectLoggedOutUser from "../../customHook/useRedirectLoggedOutUser";
-// import {
-//   changePassword,
-//   logout,
-//   RESET,
-// } from "../../redux/features/auth/authSlice";
-// import { Spinner } from "../../components/loader/Loader";
-// import { sendAutomatedEmail } from "../../redux/features/email/emailSlice";
+import {
+  Card,
+  Loader,
+  PageMenu,
+  PasswordInput,
+  useRedirectLoggedOutUser,
+} from "../../components";
+import {
+  changePassword,
+  logout,
+  RESET,
+} from "../../redux/features/auth/authSlice";
+import { sendAutomatedEmail } from "../../redux/features/email/emailSlice";
 
 const initialState = {
   oldPassword: "",
@@ -20,13 +24,13 @@ const initialState = {
 };
 
 const ChangePassword = () => {
-  //   useRedirectLoggedOutUser("/login");
+  useRedirectLoggedOutUser("/login");
   const [formData, setFormData] = useState(initialState);
   const { oldPassword, password, password2 } = formData;
 
-  //   const { isLoading, user } = useSelector((state) => state.auth);
+  const { isLoading, user } = useSelector((state) => state.auth);
 
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -51,17 +55,17 @@ const ChangePassword = () => {
     };
 
     const emailData = {
-      subject: "Password Changed - AUTH:Z",
-      //   send_to: user.email,
-      reply_to: "noreply@zino",
+      subject: "Password Changed - AUTH React",
+      send_to: user.email,
+      reply_to: "elxan@gmail.com",
       template: "changePassword",
       url: "/forgot",
     };
 
-    // await dispatch(changePassword(userData));
-    // await dispatch(sendAutomatedEmail(emailData));
-    // await dispatch(logout());
-    // await dispatch(RESET(userData));
+    await dispatch(changePassword(userData));
+    await dispatch(sendAutomatedEmail(emailData));
+    await dispatch(logout());
+    await dispatch(RESET(userData));
     navigate("/login");
   };
 
@@ -102,16 +106,16 @@ const ChangePassword = () => {
                       onChange={handleInputChange}
                     />
                   </p>
-                  {/* {isLoading ? (
-                    <Spinner />
-                  ) : ( */}
-                  <button
-                    type="submit"
-                    className="--btn --btn-danger --btn-block"
-                  >
-                    Change Password
-                  </button>
-                  {/* )} */}
+                  {isLoading ? (
+                    <Loader />
+                  ) : (
+                    <button
+                      type="submit"
+                      className="--btn --btn-danger --btn-block"
+                    >
+                      Change Password
+                    </button>
+                  )}
                 </form>
               </>
             </Card>

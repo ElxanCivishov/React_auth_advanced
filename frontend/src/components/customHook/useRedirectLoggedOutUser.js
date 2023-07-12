@@ -1,13 +1,8 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { toast } from "react-toastify";
-import authService from "../redux/features/auth/authService";
-import {
-  getLoginStatus,
-  selectIsLoggedIn,
-} from "../redux/features/auth/authSlice";
+import authService from "../../redux/features/auth/authService";
 
 const useRedirectLoggedOutUser = (path) => {
   const navigate = useNavigate();
@@ -17,7 +12,6 @@ const useRedirectLoggedOutUser = (path) => {
     const redirectLoggedOutUser = async () => {
       try {
         isLoggedIn = await authService.getLoginStatus();
-        // console.log(isLoggedIn);
       } catch (error) {
         console.log(error.message);
       }

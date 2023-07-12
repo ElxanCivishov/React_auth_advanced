@@ -1,26 +1,55 @@
 const express = require("express");
 const router = express.Router();
 const {
+  protect,
+  adminOnly,
+  authorOnly,
+} = require("../middleware/authMiddleware");
+
+const {
   registerUser,
   loginUser,
+  logoutUser,
+  getUser,
   updateUser,
-  changePassword,
-  logout,
+  deleteUser,
+  getUsers,
+  loginStatus,
+  upgradeUser,
+  sendAutomatedEmail,
+  sendVerificationEmail,
+  verifyUser,
   forgotPassword,
   resetPassword,
-  loginStatus,
-  getUser,
+  changePassword,
+  sendLoginCode,
+  loginWithCode,
+  loginWithGoogle,
 } = require("../controllers/userController");
-const protect = require("../middleware/authMiddleware");
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.get("/loggedIn", loginStatus);
-router.get("/logout", logout);
-router.get("/getuser", protect, getUser);
-router.patch("/updateuser", protect, updateUser);
-router.patch("/changepassword", protect, changePassword);
-router.post("/forgotpassword", forgotPassword);
-router.put("/resetpassword/:resetToken", resetPassword);
+router.get("/logout", logoutUser);
+router.get("/loginStatus", loginStatus);
+
+router.get("/getUser", protect, getUser);
+router.patch("/updateUser", protect, updateUser);
+router.post("/upgradeUser", protect, adminOnly, upgradeUser);
+router.delete("/:id", protect, adminOnly, deleteUser);
+router.get("/getUsers", protect, authorOnly, getUsers);
+
+
+router.post("/sendAutomatedEmail", protect, sendAutomatedEmail);
+router.post("/sendVerificationEmail", protect, sendVerificationEmail);
+
+router.patch("/verifyUser/:verificationToken", verifyUser);
+router.post("/forgotPassword", forgotPassword);
+router.patch("/resetPassword/:resetToken", resetPassword);
+router.patch("/changePassword", protect, changePassword);
+
+router.post("/sendLoginCode/:email", sendLoginCode);
+router.post("/loginWithCode/:email", loginWithCode);
+
+router.post("/google/callback", loginWithGoogle);
 
 module.exports = router;

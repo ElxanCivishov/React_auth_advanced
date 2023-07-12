@@ -23,6 +23,6 @@ const filterSlice = createSlice({
 
 export const { FILTER_USERS } = filterSlice.actions;
 
-export const selectFilteredUsers = (state) => state.filter.filteredUsers;
+export const selectUsers = (state) => state.filter.filteredUsers;
 
 export default filterSlice.reducer;

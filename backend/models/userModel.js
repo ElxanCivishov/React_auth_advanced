@@ -4,13 +4,13 @@ const bcrypt = require("bcryptjs");
 const userSchema = mongoose.Schema(
   {
     name: {
-      type: "string",
-      required: [true, "Please enter a name"],
+      type: String,
+      required: [true, "Please add a name"],
     },
     email: {
       type: String,
-      required: [true, "Please enter a email address"],
-      uniquie: true,
+      required: [true, "Please add an email"],
+      unique: true,
       trim: true,
       match: [
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -18,35 +18,51 @@ const userSchema = mongoose.Schema(
       ],
     },
     password: {
-      type: "string",
-      required: [true, "Please enter a password"],
-      minLength: [6, "Password must be at least 6 characters"],
-      // maxLength: [23, "Password must  not be more then 23 characters"],
+      type: String,
+      required: [true, "Please add a password"],
     },
     photo: {
       type: String,
+      required: [true, "Please add a photo"],
       default: "photo",
     },
     phone: {
       type: String,
+      required: [true, "Please add a phone"],
       default: "+994",
     },
     bio: {
       type: String,
       default: "bio",
-      maxLength: [250, "Bio must  not be more then 250 characters"],
+    },
+    role: {
+      type: String,
+      required: true,
+      default: "user",
+      // subscriber, author, and admin (suspended)
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    userAgent: {
+      type: Array,
+      required: true,
+      default: [],
     },
   },
   {
     timestamps: true,
+    minimize: false,
   }
 );
 
-// Encrypt password before saving
+// Encrypt password before saving to DB
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
   }
+
   // Hash password
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(this.password, salt);
@@ -54,5 +70,5 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-const user = mongoose.model("User", userSchema);
-module.exports = user;
+const User = mongoose.model("User", userSchema);
+module.exports = User;
