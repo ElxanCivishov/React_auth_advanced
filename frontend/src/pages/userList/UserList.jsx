@@ -49,10 +49,6 @@ const UserList = () => {
           label: "Delete",
           onClick: () => removeUser(id),
         },
-        {
-          label: "Cancel",
-          onClick: () => alert("Click No"),
-        },
       ],
     });
   };
@@ -130,6 +126,7 @@ const UserList = () => {
                             <FaTrashAlt
                               size={20}
                               color="red"
+                              style={{ cursor: "pointer" }}
                               onClick={() => confirmDelete(_id)}
                             />
                           </span>

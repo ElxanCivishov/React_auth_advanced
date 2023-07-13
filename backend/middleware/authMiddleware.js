@@ -5,8 +5,6 @@ const jwt = require("jsonwebtoken");
 const protect = asyncHandler(async (req, res, next) => {
   try {
     const token = req.cookies.token;
-    // const token =
-    //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YWU0OGViOWI0ZDc2NzRjYjMyMDAwNiIsImlhdCI6MTY4OTE2NjQ1OSwiZXhwIjoxNjg5MjUyODU5fQ.o2Gwu9Zhxn-jNdN7-9DfpN948umBpREU___sI5nu5i8";
     if (!token) {
       res.status(401);
       throw new Error("Not authorized, please login");

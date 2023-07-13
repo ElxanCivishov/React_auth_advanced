@@ -95,17 +95,17 @@ const deleteUser = async (id) => {
 
 // upgrade user
 const upgradeUser = async (userData) => {
-  const response = await axios.patch(API_URL + "upgrade", userData);
+  const response = await axios.patch(API_URL + "upgradeUser", userData);
   return response.data;
 };
 
-// upgrade user
+// sendAutomatedEmail user
 const sendAutomatedEmail = async (userData) => {
   const response = await axios.post(API_URL + "sendAutomatedEmail", userData);
   return response.data.message;
 };
 
-// upgrade user
+// loginWithGoogle user
 const loginWithGoogle = async (userToken) => {
   const response = await axios.post(API_URL + "google/callback", userToken);
   return response.data;

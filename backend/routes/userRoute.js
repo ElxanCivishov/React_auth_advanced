@@ -34,10 +34,9 @@ router.get("/loginStatus", loginStatus);
 
 router.get("/getUser", protect, getUser);
 router.patch("/updateUser", protect, updateUser);
-router.post("/upgradeUser", protect, adminOnly, upgradeUser);
+router.patch("/upgradeUser", protect, adminOnly, upgradeUser);
 router.delete("/:id", protect, adminOnly, deleteUser);
 router.get("/getUsers", protect, authorOnly, getUsers);
-
 
 router.post("/sendAutomatedEmail", protect, sendAutomatedEmail);
 router.post("/sendVerificationEmail", protect, sendVerificationEmail);

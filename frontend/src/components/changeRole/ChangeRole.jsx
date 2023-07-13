@@ -32,7 +32,7 @@ const ChangeRole = ({ _id, email }) => {
       template: "changeRole",
       url: "/login",
     };
-
+    console.log(userData);
     await dispatch(upgradeUser(userData));
     await dispatch(sendAutomatedEmail(emailData));
     await dispatch(getUsers());

@@ -43,8 +43,8 @@ const registerUser = asyncHandler(async (req, res) => {
   const ua = parser(req.headers["user-agent"]);
   const userAgent = [ua.ua];
 
-  console.log(userAgent, "useragent");
-  console.log(ua, "ua");
+  // console.log(userAgent, "useragent");
+  // console.log(ua, "ua");
 
   //   Create new user
   const user = await User.create({
@@ -113,7 +113,7 @@ const loginUser = asyncHandler(async (req, res) => {
   // Trgger 2FA for unknow UserAgent
   const ua = parser(req.headers["user-agent"]);
   const thisUserAgent = ua.ua;
-  console.log(thisUserAgent);
+  // console.log(thisUserAgent);
   const allowedAgent = user.userAgent.includes(thisUserAgent);
 
   // if (!allowedAgent) {
@@ -491,6 +491,8 @@ const upgradeUser = asyncHandler(async (req, res) => {
 
   const user = await User.findById(id);
 
+  // console.log(user, role, id);
+
   if (!user) {
     res.status(404);
     throw new Error("User not found");
@@ -561,7 +563,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
   //   Create Verification Token and Save
   const resetToken = crypto.randomBytes(32).toString("hex") + user._id;
-  console.log(resetToken);
+  // console.log(resetToken);
 
   // Hash token and save
   const hashedToken = hashToken(resetToken);
@@ -605,8 +607,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
 const resetPassword = asyncHandler(async (req, res) => {
   const { resetToken } = req.params;
   const { password } = req.body;
-  console.log(resetToken);
-  console.log(password);
+  // console.log(resetToken);
+  // console.log(password);
 
   const hashedToken = hashToken(resetToken);
 
@@ -664,7 +666,6 @@ const changePassword = asyncHandler(async (req, res) => {
 
 const loginWithGoogle = asyncHandler(async (req, res) => {
   const { userToken } = req.body;
-  console.log(userToken);
 
   const ticket = await client.verifyIdToken({
     idToken: userToken,
