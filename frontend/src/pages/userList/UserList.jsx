@@ -78,7 +78,6 @@ const UserList = () => {
       <div className="container">
         <PageMenu />
         <UsersStats />
-
         <div className="user-list">
           {isLoading && <Loader />}
           <div className="table">

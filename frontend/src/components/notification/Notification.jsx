@@ -11,8 +11,8 @@ const Notification = () => {
   const dispatch = useDispatch();
 
   const sendVerEmail = async () => {
-    await dispatch(sendVerificationEmail());
-    await dispatch(RESET());
+    dispatch(sendVerificationEmail());
+    dispatch(RESET());
   };
 
   return (

@@ -1,12 +1,11 @@
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import axios from "axios";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import {
   getLoginStatus,
@@ -38,9 +37,9 @@ function App() {
 
   useEffect(() => {
     dispatch(getLoginStatus());
-    // if (isLoggedIn && user !== null) {
-    //   dispatch(getUser());
-    // }
+    if (isLoggedIn && user === null) {
+      dispatch(getUser());
+    }
   }, [dispatch, isLoggedIn, user]);
 
   return (

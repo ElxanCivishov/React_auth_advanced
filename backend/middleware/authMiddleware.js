@@ -17,18 +17,18 @@ const protect = asyncHandler(async (req, res, next) => {
 
     if (!user) {
       res.status(404);
-      throw new Error("User not found");
+      throw new Error("User not found!");
     }
     if (user.role === "suspended") {
       res.status(400);
-      throw new Error("User suspended, please contact support");
+      throw new Error("User suspended, please contact support!");
     }
 
     req.user = user;
     next();
   } catch (error) {
     res.status(401);
-    throw new Error("Not authorized, please login");
+    throw new Error("Not authorized, please login!");
   }
 });
 
@@ -37,7 +37,7 @@ const verifiedOnly = asyncHandler(async (req, res, next) => {
     next();
   } else {
     res.status(401);
-    throw new Error("Not authorized, account not verified");
+    throw new Error("Not authorized, account not verified!");
   }
 });
 

@@ -62,10 +62,10 @@ const ChangePassword = () => {
       url: "/forgot",
     };
 
-    await dispatch(changePassword(userData));
-    await dispatch(sendAutomatedEmail(emailData));
-    await dispatch(logout());
-    await dispatch(RESET(userData));
+    dispatch(changePassword(userData));
+    dispatch(sendAutomatedEmail(emailData));
+    dispatch(logout());
+    dispatch(RESET(userData));
     navigate("/login");
   };
 

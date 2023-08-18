@@ -10,9 +10,9 @@ const Verify = () => {
 
   const { isLoading } = useSelector((state) => state.auth);
 
-  const verifyAccount = async () => {
-    await dispatch(verifyUser(verificationToken));
-    await dispatch(RESET());
+  const verifyAccount = () => {
+    dispatch(verifyUser(verificationToken));
+    dispatch(RESET());
   };
 
   return (
